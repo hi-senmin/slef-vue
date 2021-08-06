@@ -1,5 +1,6 @@
 import defineReactive from './defineReactive.js'
 import protoArguments from './array.js'
+import Dep from './dep.js'
 
 
 export function observe(value) {
@@ -13,6 +14,8 @@ export function observe(value) {
 
 
 export function Observer(value) {
+  this.dep = new Dep()
+
   Object.defineProperty(value, '__ob__', {
     value: this,
     enumerable: false,

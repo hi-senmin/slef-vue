@@ -18,6 +18,24 @@ methodsToPatch.forEach((method) => {
     value: function (...args) {
       const res = arrayProto[method].call(this, args)
       console.log('array reactive')
+
+      let inserted
+
+
+      switch (method) {
+        case 'push':
+        case 'unshift':
+          inserted = args
+          break
+        case 'splice':
+          inserted = args.slice(2)
+        break
+      }
+      if (inserted) {
+        this.__ob__.observeArray(inserted)
+      }
+      this.__ob__.dep.notify()
+
       return res
     },
     configurable: true,
